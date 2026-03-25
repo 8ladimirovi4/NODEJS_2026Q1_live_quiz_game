@@ -1,7 +1,14 @@
+import 'dotenv/config';
 import { WebSocketServer } from 'ws';
+import { PORT, HOST } from './config.js';
+import { dispatchMessage } from './messageRouter.js';
 
+const wss = new WebSocketServer({ port: PORT, host: HOST });
 
-const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
+wss.on('connection', (ws) => {
+  ws.on('message', (data) => {
+    dispatchMessage(ws, data);
+  });
+});
 
-// WebSocket server
-const wss = new WebSocketServer({ port: PORT });
+console.log(`WebSocket server listening on ws://${HOST}:${PORT}`);
