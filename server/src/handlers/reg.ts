@@ -2,7 +2,7 @@ import type WebSocket from 'ws';
 import { send } from '../protocol.js';
 import crypto from 'node:crypto';
 import type { RegData } from '../types.js';
-import { usersByName } from '../state.js';
+import { usersByName, userBySocket } from '../state.js';
 
 export function handleReg(ws: WebSocket, data: RegData): void {
   const { name, password } = data;
@@ -31,7 +31,6 @@ export function handleReg(ws: WebSocket, data: RegData): void {
       name,
       index: userInfo.index,
       error: false,
-      errorText: '',
     });
     return;
   }
@@ -44,10 +43,11 @@ export function handleReg(ws: WebSocket, data: RegData): void {
     ws,
   });
 
+  userBySocket.set(ws, id);
+
   send(ws, 'reg', {
     name,
     index: id,
     error: false,
-    errorText: '',
   });
 }
