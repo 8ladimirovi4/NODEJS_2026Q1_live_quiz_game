@@ -40,26 +40,19 @@ export function handleCreateGame(ws: WebSocket, data: CreateGameData): void {
   const hostId = userBySocket.get(ws);
 
   if (!hostId) {
-    send(ws, 'game_created', {
-      error: true,
-      errorText: 'User error',
-    });
+    send(ws, 'error', { message: 'Register before creating a game' });
     return;
   }
 
   if (!data.questions?.length) {
-    send(ws, 'game_created', {
-      error: true,
-      errorText: 'No questions',
-    });
+    send(ws, 'error', { message: 'No questions' });
     return;
   }
 
   for (const q of data.questions) {
     if (!isValidQuestion(q)) {
-      send(ws, 'game_created', {
-        error: true,
-        errorText: `Question not valid: ${typeof q?.text === 'string' ? q.text : ''}`,
+      send(ws, 'error', {
+        message: `Question not valid: ${typeof q?.text === 'string' ? q.text : ''}`,
       });
       return;
     }

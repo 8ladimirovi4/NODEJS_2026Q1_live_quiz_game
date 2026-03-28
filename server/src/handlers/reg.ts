@@ -27,6 +27,7 @@ export function handleReg(ws: WebSocket, data: RegData): void {
     }
 
     usersByName.set(name, { ...userInfo, ws });
+    userBySocket.set(ws, userInfo.index);
     send(ws, 'reg', {
       name,
       index: userInfo.index,
@@ -36,12 +37,13 @@ export function handleReg(ws: WebSocket, data: RegData): void {
   }
 
   const id = crypto.randomUUID();
-  usersByName.set(name, {
+  const newUser = {
     name,
     password,
     index: id,
     ws,
-  });
+  };
+  usersByName.set(name, newUser);
 
   userBySocket.set(ws, id);
 
