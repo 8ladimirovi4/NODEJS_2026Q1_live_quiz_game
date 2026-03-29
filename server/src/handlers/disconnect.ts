@@ -38,6 +38,21 @@ export function handleDisconnect(ws: Ws): void {
     return;
   }
 
+  const hostGames = [...gamesById.values()].filter(
+    (g) => g.status !== GameStatus.Finished && g.hostId === userId,
+  );
+  if (hostGames.length > 0) {
+    for (const game of hostGames) {
+      for (const p of game.players) {
+        if (p.ws) {
+          send(p.ws, 'error', { message: 'Host disconnected' });
+        }
+      }
+      cleanupFinishedGame(game);
+    }
+    return;
+  }
+
   for (const game of gamesById.values()) {
     if (game.status === GameStatus.Finished) {
       continue;
