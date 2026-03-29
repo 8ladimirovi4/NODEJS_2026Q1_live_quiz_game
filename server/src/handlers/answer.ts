@@ -2,6 +2,7 @@ import type WebSocket from 'ws';
 import { gamesById, userBySocket } from '../state.js';
 import { send } from '../protocol.js';
 import type { AnswerData, Game } from '../types.js';
+import { GameStatus } from '../types.js';
 import { finalizeCurrentQuestion } from '../game/round.js';
 
 export function handleAnswer(ws: WebSocket, data: AnswerData): void {
@@ -10,6 +11,13 @@ export function handleAnswer(ws: WebSocket, data: AnswerData): void {
   if (!game) {
     send(ws, 'error', {
       message: 'Game error',
+    });
+    return;
+  }
+
+  if (game.status !== GameStatus.InProgress) {
+    send(ws, 'error', {
+      message: 'Wrong game status',
     });
     return;
   }

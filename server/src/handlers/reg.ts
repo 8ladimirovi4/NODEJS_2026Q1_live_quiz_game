@@ -32,6 +32,7 @@ export function handleReg(ws: WebSocket, data: RegData): void {
       name,
       index: userInfo.index,
       error: false,
+      errorText: '',
     });
     return;
   }
@@ -51,5 +52,6 @@ export function handleReg(ws: WebSocket, data: RegData): void {
     name,
     index: id,
     error: false,
+    errorText: '',
   });
 }

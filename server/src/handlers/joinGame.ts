@@ -1,8 +1,8 @@
 import type WebSocket from 'ws';
-import type { JoinGameData, Player, User } from '../types.js';
+import type { JoinGameData, Player } from '../types.js';
 import { GameStatus } from '../types.js';
 import { send } from '../protocol.js';
-import { gamesByCode, gamesById, userBySocket, usersByName } from '../state.js';
+import { gamesByCode, gamesById, userBySocket } from '../state.js';
 import { getUserByIndex } from '../utils/getUserByIndex.js';
 import { collectAllRecipients } from '../utils/collectAllRecipients.js';
 
@@ -74,8 +74,10 @@ export function handleJoinGame(ws: WebSocket, data: JoinGameData): void {
 
   const host = getUserByIndex(game.hostId);
 
-  if(!host){
-    console.error('Host error')
+  if (!host) {
+    send(ws, 'error', {
+      message: 'Host unavailable',
+    });
     return;
   }
 
@@ -95,16 +97,6 @@ export function handleJoinGame(ws: WebSocket, data: JoinGameData): void {
     playerName: user.name,
     playerCount: game.players.length,
   };
-
-  const recipients = new Set<WebSocket>();
-  if (host?.ws) {
-    recipients.add(host.ws);
-  }
-  for (const p of game.players) {
-    if (p.ws) {
-      recipients.add(p.ws);
-    }
-  }
 
   for (const socket of collectAllRecipients(host, game.players)) {
     send(socket, 'player_joined', playerJoinedData);
