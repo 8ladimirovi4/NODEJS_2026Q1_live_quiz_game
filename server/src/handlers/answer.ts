@@ -70,14 +70,15 @@ export function handleAnswer(ws: WebSocket, data: AnswerData): void {
     return;
   }
 
-  //set answer to db
   for (const p of game.players) {
     if (p.index === userId) {
-      const points = 0; //TBD from points
-      p.score += points;
       p.hasAnswered = true;
       p.answerTime = playerAnsweredTimestamp - qStartTime;
       p.answeredCorrectly = data.answerIndex === question.correctIndex;
+      game.playerAnswers.set(userId, {
+        answerIndex: data.answerIndex,
+        timestamp: playerAnsweredTimestamp,
+      });
     }
   }
 
