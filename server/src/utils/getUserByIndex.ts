@@ -1,5 +1,5 @@
-import { usersByName } from "../state";
-import type { User } from "../types";
+import { usersByName } from '../state.js';
+import type { User } from '../types.js';
 
 export function getUserByIndex(index: string | undefined): User | undefined {
     if (!index) {

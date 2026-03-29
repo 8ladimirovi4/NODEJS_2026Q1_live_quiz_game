@@ -1,5 +1,5 @@
 import type { WebSocket } from "ws";
-import type { Player, User } from "../types.ts";
+import type { Player, User } from '../types.js';
 
 export const collectAllRecipients = (
   host: User,
