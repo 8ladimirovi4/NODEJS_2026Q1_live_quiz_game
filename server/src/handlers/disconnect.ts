@@ -1,4 +1,3 @@
-import WebSocket from 'ws';
 import type { WebSocket as Ws } from 'ws';
 import type { Game, Player } from '../types.js';
 import { GameStatus } from '../types.js';
@@ -16,17 +15,6 @@ function clearQuestionTimer(game: Game): void {
 
 function publicPlayersPayload(players: Player[]) {
   return players.map(({ name, index, score }) => ({ name, index, score }));
-}
-
-export function closeSocketsAfterGameFinished(sockets: Iterable<Ws>): void {
-  const list = [...sockets];
-  queueMicrotask(() => {
-    for (const ws of list) {
-      if (ws.readyState === WebSocket.OPEN) {
-        ws.close(1000, 'Game finished');
-      }
-    }
-  });
 }
 
 export function cleanupFinishedGame(game: Game): void {

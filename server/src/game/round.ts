@@ -2,7 +2,7 @@ import { send } from "../protocol.js";
 import type { Game, Question } from "../types.js";
 import { GameStatus } from "../types.js";
 import { buildFinalScoreboard, buildPlayerResultsAfterQuestion } from "./scoring.js";
-import { cleanupFinishedGame, closeSocketsAfterGameFinished } from "../handlers/disconnect.js";
+import { cleanupFinishedGame } from "../handlers/disconnect.js";
 import { collectAllRecipients } from "../utils/collectAllRecipients.js";
 import { getUserByIndex } from "../utils/getUserByIndex.js";
 
@@ -108,13 +108,11 @@ export const finalizeCurrentQuestion = (g:Game) => {
   } else {
     g.status = GameStatus.Finished
     const scoreboard = buildFinalScoreboard(g.players)
-    const recipients = collectAllRecipients(host, g.players)
-    for(const socket of recipients){
+    for(const socket of collectAllRecipients(host, g.players)){
       send(socket, "game_finished", {
         scoreboard,
       })
     }
-    closeSocketsAfterGameFinished(recipients)
     cleanupFinishedGame(g)
   }
 } 
