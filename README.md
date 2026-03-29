@@ -83,3 +83,7 @@ cd server && npm run build
 # Start built server
 npm run start
 ```
+
+## Sample questions for testing
+
+In the project root, **`quiz-questions-nodejs.json`** is a ready-made test file: it contains a **`questions`** array in the same format the client uses when the host creates a game (`text`, four `options`, `correctIndex`, `timeLimitSec`). You can copy values from this file into the “create game” form to try the quiz without typing questions by hand.
