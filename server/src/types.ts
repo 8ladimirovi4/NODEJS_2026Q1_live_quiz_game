@@ -1,5 +1,11 @@
 import type { WebSocket } from 'ws';
 
+export enum GameStatus {
+  Waiting = 'waiting',
+  InProgress = 'in_progress',
+  Finished = 'finished',
+}
+
 export interface Player {
   name: string;
   index: string;
@@ -24,7 +30,7 @@ export interface Game {
   questions: Question[];
   players: Player[];
   currentQuestion: number;
-  status: 'waiting' | 'in_progress' | 'finished';
+  status: GameStatus;
   questionStartTime?: number;
   questionTimer?: NodeJS.Timeout;
   playerAnswers: Map<string, { answerIndex: number; timestamp: number }>;
