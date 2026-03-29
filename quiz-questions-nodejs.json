@@ -1,0 +1,60 @@
+{
+  "questions": [
+    {
+      "text": "Which Node.js core module is used for the file system with the default callback-based API (not promises by default in older Node)?",
+      "options": ["fs", "path", "http", "crypto"],
+      "correctIndex": 0,
+      "timeLimitSec": 30
+    },
+    {
+      "text": "What does the \"type\": \"module\" field in package.json do?",
+      "options": [
+        "Enables TypeScript strict mode",
+        "Makes Node treat .js files as ES modules",
+        "Disables node_modules",
+        "Forces CommonJS only"
+      ],
+      "correctIndex": 1,
+      "timeLimitSec": 25
+    },
+    {
+      "text": "Which stream interface in Node.js is typically used for writing data to a file in chunks?",
+      "options": ["Readable", "Writable", "Duplex", "Transform"],
+      "correctIndex": 1,
+      "timeLimitSec": 25
+    },
+    {
+      "text": "What is process.env commonly used for?",
+      "options": [
+        "Storing npm dependencies",
+        "Accessing environment variables",
+        "Managing a worker cluster",
+        "Parsing JSON request bodies"
+      ],
+      "correctIndex": 1,
+      "timeLimitSec": 20
+    },
+    {
+      "text": "In a typical Node.js http/https server, what are the two main objects passed to the request handler?",
+      "options": [
+        "req and res",
+        "socket and buffer",
+        "import and export",
+        "stdin and stdout"
+      ],
+      "correctIndex": 0,
+      "timeLimitSec": 25
+    },
+    {
+      "text": "Which option describes a built-in way to run a script with Node CLI flags (e.g. --inspect)?",
+      "options": [
+        "npm run with no arguments only",
+        "Pass flags to node before the script file name",
+        "Webpack only",
+        "ts-node only, never node"
+      ],
+      "correctIndex": 1,
+      "timeLimitSec": 30
+    }
+  ]
+}
