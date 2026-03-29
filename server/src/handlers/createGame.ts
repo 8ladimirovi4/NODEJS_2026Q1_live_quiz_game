@@ -1,5 +1,6 @@
 import type WebSocket from 'ws';
 import type { CreateGameData, Question } from '../types.js';
+import { GameStatus } from '../types.js';
 import { userBySocket } from '../state.js';
 import { send } from '../protocol.js';
 import { codeGenerator } from '../utils/codeGenerator.js';
@@ -79,7 +80,7 @@ export function handleCreateGame(ws: WebSocket, data: CreateGameData): void {
     questions: data.questions,
     players: [],
     currentQuestion: -1,
-    status: 'waiting',
+    status: GameStatus.Waiting,
     questionStartTime: undefined,
     questionTimer: undefined,
     playerAnswers: new Map(),

@@ -1,14 +1,10 @@
 import type WebSocket from 'ws';
 import type { JoinGameData, Player, User } from '../types.js';
+import { GameStatus } from '../types.js';
 import { send } from '../protocol.js';
 import { gamesByCode, gamesById, userBySocket, usersByName } from '../state.js';
-
-function getUserByIndex(index: string | undefined): User | undefined {
-  if (!index) {
-    return undefined;
-  }
-  return [...usersByName.values()].find((u) => u.index === index);
-}
+import { getUserByIndex } from '../utils/getUserByIndex.js';
+import { collectAllRecipients } from '../utils/collectAllRecipients.js';
 
 function publicPlayersPayload(players: Player[]) {
   return players.map(({ name, index, score }) => ({ name, index, score }));
@@ -52,7 +48,7 @@ export function handleJoinGame(ws: WebSocket, data: JoinGameData): void {
   }
 
   //is correct game status
-  if (game?.status !== 'waiting') {
+  if (game?.status !== GameStatus.Waiting) {
     send(ws, 'error', {
       message: 'Wrong game status',
     });
@@ -77,6 +73,11 @@ export function handleJoinGame(ws: WebSocket, data: JoinGameData): void {
   }
 
   const host = getUserByIndex(game.hostId);
+
+  if(!host){
+    console.error('Host error')
+    return;
+  }
 
   game.players.push({
     name: user.name,
@@ -105,7 +106,7 @@ export function handleJoinGame(ws: WebSocket, data: JoinGameData): void {
     }
   }
 
-  for (const socket of recipients) {
+  for (const socket of collectAllRecipients(host, game.players)) {
     send(socket, 'player_joined', playerJoinedData);
     send(socket, 'update_players', playerList);
   }

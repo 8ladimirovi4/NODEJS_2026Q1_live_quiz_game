@@ -22,7 +22,7 @@ export const gamesById = new Map<string, Game>();
 //     questions
 //     players
 //     currentQuestion
-//     status
+//     status (GameStatus)
 //     questionStartTime
 //     questionTimer
 //     playerAnswers
